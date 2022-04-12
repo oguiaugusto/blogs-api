@@ -16,6 +16,7 @@ router.post('/', async (req, res, next) => {
 
     if (user.error) return next(user.error);
 
+    delete user.dataValues.password;
     const jwtConfig = { expiresIn: '1d', algorithm: 'HS256' };
     const token = jwt.sign({ data: user }, JWT_SECRET, jwtConfig);
 
