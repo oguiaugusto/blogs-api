@@ -26,6 +26,19 @@ const create = async ({ displayName, email, password, image }) => {
   }
 };
 
+const getAll = async () => {
+  try {
+    const users = Users.findAll();
+
+    if (!users) return { error: { code: httpCodes.NOT_FOUND, message: errors.users.noUserFound } };
+    return users;
+  } catch (error) {
+    console.log(error.message);
+    return { error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } };
+  }
+};
+
 module.exports = {
   create,
+  getAll,
 };
