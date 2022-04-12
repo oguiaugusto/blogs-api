@@ -15,5 +15,8 @@ module.exports = {
     alreadyRegistered: 'Category already registered',
     noCategoryFound: 'No category found',
   },
+  posts: {
+    categoryIdsNotFound: '"categoryIds" not found',
+  },
   internal: 'Something went wrong!',
 };
