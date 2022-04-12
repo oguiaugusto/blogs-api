@@ -23,6 +23,8 @@ const create = async ({ displayName, email, password, image }) => {
     }
 
     const user = await Users.create({ displayName, email, password, image });
+    delete user.dataValues.password;
+
     return user;
   } catch (error) {
     console.log(error.message);
@@ -32,16 +34,9 @@ const create = async ({ displayName, email, password, image }) => {
 
 const getAll = async () => {
   try {
-    let users = await Users.findAll();
+    const users = await Users.findAll({ attributes: { exclude: ['password'] } });
 
     if (!users) return { error: { code: httpCodes.NOT_FOUND, message: errors.users.noUserFound } };
-
-    users = users.map((user) => {
-      const newUser = user;
-      delete newUser.dataValues.password;
-      return newUser;
-    });
-
     return users;
   } catch (error) {
     console.log(error.message);
@@ -51,11 +46,9 @@ const getAll = async () => {
 
 const getById = async (id) => {
   try {
-    const user = await Users.findByPk(id);
+    const user = await Users.findByPk(id, { attributes: { exclude: ['password'] } });
 
     if (!user) return { error: { code: httpCodes.NOT_FOUND, message: errors.users.doesNotExist } };
-
-    delete user.dataValues.password;
     return user;
   } catch (error) {
     console.log(error.message);
