@@ -23,7 +23,7 @@ router.post('/', async (req, res, next) => {
     return res.status(httpCodes.CREATED).json({ token });
   } catch (error) {
     console.log(error.message);
-    return { error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } };
+    return next({ error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } });
   }
 });
 
