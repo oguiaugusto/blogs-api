@@ -2,6 +2,7 @@ module.exports = {
   users: {
     alreadyRegistered: 'User already registered',
     noUserFound: 'No user found',
+    doesNotExist: 'User does not exist',
   },
   login: {
     invalidFields: 'Invalid fields',

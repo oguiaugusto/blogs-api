@@ -49,4 +49,18 @@ router.get('/', auth, async (req, res, next) => {
   }
 });
 
+router.get('/:id', auth, async (req, res, next) => {
+  try {
+    const user = await Users.getById(req.params.id);
+
+    if (user.error) return next(user.error);
+
+    delete user.dataValues.password;
+    return res.status(httpCodes.OK).json(user);
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError(next);
+  }
+});
+
 module.exports = router;

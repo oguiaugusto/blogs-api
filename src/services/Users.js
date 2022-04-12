@@ -38,7 +38,20 @@ const getAll = async () => {
   }
 };
 
+const getById = async (id) => {
+  try {
+    const user = await Users.findByPk(id);
+
+    if (!user) return { error: { code: httpCodes.NOT_FOUND, message: errors.users.doesNotExist } };
+    return user;
+  } catch (error) {
+    console.log(error.message);
+    return { error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } };
+  }
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
