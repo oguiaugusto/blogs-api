@@ -32,9 +32,16 @@ const create = async ({ displayName, email, password, image }) => {
 
 const getAll = async () => {
   try {
-    const users = Users.findAll();
+    let users = await Users.findAll();
 
     if (!users) return { error: { code: httpCodes.NOT_FOUND, message: errors.users.noUserFound } };
+
+    users = users.map((user) => {
+      const newUser = user;
+      delete newUser.dataValues.password;
+      return newUser;
+    });
+
     return users;
   } catch (error) {
     console.log(error.message);
@@ -47,6 +54,8 @@ const getById = async (id) => {
     const user = await Users.findByPk(id);
 
     if (!user) return { error: { code: httpCodes.NOT_FOUND, message: errors.users.doesNotExist } };
+
+    delete user.dataValues.password;
     return user;
   } catch (error) {
     console.log(error.message);
