@@ -11,5 +11,8 @@ module.exports = {
     notFound: 'Token not found',
     expiredOrInvalid: 'Expired or invalid token',
   },
+  category: {
+    alreadyRegistered: 'Category already registered',
+  },
   internal: 'Something went wrong!',
 };
