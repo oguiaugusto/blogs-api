@@ -11,7 +11,6 @@ const create = async ({ displayName, email, password, image }) => {
       email: Joi.string().email().required(),
       password: Joi.string().length(6).required(),
     }).validate({ displayName, email, password });
-    console.log(schema.error);
     if (schema.error) return { error: schema.error };
   
     const existingEmail = await Users.findOne({ where: { email } });
