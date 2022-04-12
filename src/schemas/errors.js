@@ -17,6 +17,7 @@ module.exports = {
   },
   posts: {
     categoryIdsNotFound: '"categoryIds" not found',
+    notFound: 'Post not found',
   },
   internal: 'Something went wrong!',
 };

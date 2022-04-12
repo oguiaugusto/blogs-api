@@ -2,7 +2,7 @@ const Joi = require('joi');
 const { Sequelize } = require('sequelize');
 const config = require('../config/config');
 
-const { BlogPosts, Categories, PostsCategories } = require('../models');
+const { BlogPosts, Categories, PostsCategories, Users } = require('../models');
 const errors = require('../schemas/errors');
 const httpCodes = require('../schemas/httpCodes');
 
@@ -58,6 +58,24 @@ const create = async ({ title, content, categoryIds, userId }) => {
   }
 };
 
+const getAll = async () => {
+  try {
+    const posts = await BlogPosts.findAll({
+      include: [
+        { model: Users, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Categories, as: 'categories', through: { attributes: [] } },
+      ],
+    });
+
+    if (!posts) return { error: { code: httpCodes.NOT_FOUND, message: errors.posts.notFound } };
+    return posts;
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError();
+  }
+};
+
 module.exports = {
   create,
+  getAll,
 };
