@@ -10,7 +10,7 @@ const auth = require('../middlewares/auth');
 const router = express.Router();
 const { JWT_SECRET } = process.env;
 const getInternalError = (next) => (
-  next({ error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } })
+  next({ code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal })
 );
 
 router.post('/', async (req, res, next) => {
