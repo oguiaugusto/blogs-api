@@ -4,6 +4,10 @@ const { Users } = require('../models');
 const errors = require('../schemas/errors');
 const httpCodes = require('../schemas/httpCodes');
 
+const getInternalError = () => ({
+  error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal },
+});
+
 const create = async ({ displayName, email, password, image }) => {
   try {
     const schema = Joi.object({
@@ -22,7 +26,7 @@ const create = async ({ displayName, email, password, image }) => {
     return user;
   } catch (error) {
     console.log(error.message);
-    return { error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } };
+    return getInternalError();
   }
 };
 
@@ -34,7 +38,7 @@ const getAll = async () => {
     return users;
   } catch (error) {
     console.log(error.message);
-    return { error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } };
+    return getInternalError();
   }
 };
 
@@ -46,7 +50,7 @@ const getById = async (id) => {
     return user;
   } catch (error) {
     console.log(error.message);
-    return { error: { code: httpCodes.INTERNAL_SERVER_ERROR, message: errors.internal } };
+    return getInternalError();
   }
 };
 
