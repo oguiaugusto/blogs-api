@@ -24,4 +24,16 @@ router.post('/', auth, async (req, res, next) => {
   }
 });
 
+router.get('/', auth, async (req, res, next) => {
+  try {
+    const categories = await Categories.getAll();
+
+    if (categories.error) return next(categories.error);
+    return res.status(httpCodes.OK).json(categories);
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError(next);
+  }
+});
+
 module.exports = router;

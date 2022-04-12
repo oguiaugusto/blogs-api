@@ -13,6 +13,7 @@ module.exports = {
   },
   category: {
     alreadyRegistered: 'Category already registered',
+    noCategoryFound: 'No category found',
   },
   internal: 'Something went wrong!',
 };

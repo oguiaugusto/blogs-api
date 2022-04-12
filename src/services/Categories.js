@@ -26,6 +26,21 @@ const create = async ({ name }) => {
   }
 };
 
+const getAll = async () => {
+  try {
+    const categories = await Categories.findAll({ order: ['id'] });
+
+    if (!categories) {
+      return { error: { code: httpCodes.NOT_FOUND, message: errors.category.noCategoryFound } };
+    }
+    return categories;
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError();
+  }
+};
+
 module.exports = {
   create,
+  getAll,
 };
