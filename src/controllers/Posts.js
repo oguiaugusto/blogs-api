@@ -61,4 +61,17 @@ router.put('/:id', auth, async (req, res, next) => {
   }
 });
 
+router.delete('/:id', auth, async (req, res, next) => {
+  try {
+    const { params: { id }, user: { id: userId } } = req;
+    const post = await Posts.remove({ id, userId });
+
+    if (post.error) return next(post.error);
+    return res.status(httpCodes.NO_CONTENT).end();
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError(next);
+  }
+});
+
 module.exports = router;

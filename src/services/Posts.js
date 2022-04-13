@@ -134,9 +134,29 @@ const update = async ({ id, userId, categoryIds, title, content }) => {
   }
 };
 
+const remove = async ({ id, userId }) => {
+  try {
+    const existingPost = await BlogPosts.findByPk(id);
+    if (!existingPost) {
+      return { error: { code: httpCodes.NOT_FOUND, message: errors.posts.doesNotExist } };
+    }
+
+    if (existingPost.dataValues.userId !== userId) {
+      return { error: { code: httpCodes.UNAUTHORIZED, message: errors.users.unauthorized } };
+    }
+    
+    const post = await existingPost.destroy();
+    return post;
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError();
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  remove,
 };
