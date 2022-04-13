@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { Sequelize } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 const config = require('../config/config');
 
 const { BlogPosts, Categories, PostsCategories, Users } = require('../models');
@@ -80,13 +80,18 @@ const create = async ({ title, content, categoryIds, userId }) => {
   }
 };
 
-const getAll = async () => {
+const getAll = async (searchTerm) => {
   try {
+    const where = searchTerm ? { [Op.or]: [
+      { title: { [Op.like]: `%${searchTerm}%` } },
+      { content: { [Op.like]: `%${searchTerm}%` } }],
+    } : {};
     const posts = await BlogPosts.findAll({
       include: [
         { model: Users, as: 'user', attributes: { exclude: ['password'] } },
         { model: Categories, as: 'categories', through: { attributes: [] } },
       ],
+      where,
     });
 
     if (!posts) return { error: { code: httpCodes.NOT_FOUND, message: errors.posts.notFound } };

@@ -36,6 +36,19 @@ router.get('/', auth, async (req, res, next) => {
   }
 });
 
+router.get('/search', auth, async (req, res, next) => {
+  try {
+    const { q: searchTerm } = req.query;
+    const posts = await Posts.getAll(searchTerm);
+
+    if (posts.error) return next(posts.error);
+    return res.status(httpCodes.OK).json(posts);
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError(next);
+  }
+});
+
 router.get('/:id', auth, async (req, res, next) => {
   try {
     const post = await Posts.getById(req.params.id);
