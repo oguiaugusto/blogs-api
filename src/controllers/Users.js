@@ -54,4 +54,17 @@ router.get('/:id', auth, async (req, res, next) => {
   }
 });
 
+router.delete('/me', auth, async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const user = await Users.remove(id);
+
+    if (user && user.error) return next(user.error);
+    return res.status(httpCodes.NO_CONTENT).end();
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError(next);
+  }
+});
+
 module.exports = router;
