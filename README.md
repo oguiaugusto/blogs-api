@@ -43,6 +43,7 @@ The goal was to create a Blogs API using NodeJS, ExpressJS and Sequelize (ORM). 
   - mysql2 ([npm library](https://www.npmjs.com/package/mysql2))
   - Nodemon
   - DotEnv
+  - JOI
 
 ## Using Application
 
