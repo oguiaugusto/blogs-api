@@ -33,6 +33,28 @@ const getCreateTransaction = async ({ title, content, categoryIds, userId }) => 
   return transactionResult;
 };
 
+const checkUpdateErrors = ({ categoryIds, existingPost, userId, title, content }) => {
+  if (categoryIds) {
+    return { error:
+      { code: httpCodes.BAD_REQUEST, message: errors.posts.categoriesNotEditable },
+    };
+  }
+
+  if (!existingPost) {
+    return { error: { code: httpCodes.NOT_FOUND, message: errors.posts.doesNotExist } };
+  }
+
+  if (existingPost.dataValues.userId !== userId) {
+    return { error: { code: httpCodes.UNAUTHORIZED, message: errors.users.unauthorized } };
+  }
+
+  const schema = Joi.object({
+    title: Joi.string().not().empty().required(),
+    content: Joi.string().not().empty().required(),
+  }).validate({ title, content });
+  if (schema.error) return { error: schema.error };
+};
+
 const create = async ({ title, content, categoryIds, userId }) => {
     try {
     const schema = Joi.object({
@@ -93,8 +115,28 @@ const getById = async (id) => {
   }
 };
 
+const update = async ({ id, userId, categoryIds, title, content }) => {
+  try {
+    const existingPost = await BlogPosts.findByPk(id, {
+      include: [{ model: Categories, as: 'categories', through: { attributes: [] } }],
+    });
+    
+    const updateErrors = checkUpdateErrors({ categoryIds, existingPost, userId, title, content });
+    if (updateErrors && updateErrors.error) return updateErrors;
+
+    const post = await existingPost.update({ title, content, bloos: 'qasd' });
+    delete post.dataValues.published; delete post.dataValues.updated;
+
+    return post;
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError();
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

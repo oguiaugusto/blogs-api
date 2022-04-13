@@ -3,6 +3,7 @@ module.exports = {
     alreadyRegistered: 'User already registered',
     noUserFound: 'No user found',
     doesNotExist: 'User does not exist',
+    unauthorized: 'Unauthorized user',
   },
   login: {
     invalidFields: 'Invalid fields',
@@ -19,6 +20,7 @@ module.exports = {
     categoryIdsNotFound: '"categoryIds" not found',
     notFound: 'Post not found',
     doesNotExist: 'Post does not exist',
+    categoriesNotEditable: 'Categories cannot be edited',
   },
   internal: 'Something went wrong!',
 };

@@ -48,4 +48,17 @@ router.get('/:id', auth, async (req, res, next) => {
   }
 });
 
+router.put('/:id', auth, async (req, res, next) => {
+  try {
+    const { body: { title, content, categoryIds }, user: { id: userId }, params: { id } } = req;
+    const post = await Posts.update({ title, categoryIds, content, id, userId });
+
+    if (post.error) return next(post.error);
+    return res.status(httpCodes.OK).json(post);
+  } catch (error) {
+    console.log(error.message);
+    return getInternalError(next);
+  }
+});
+
 module.exports = router;
